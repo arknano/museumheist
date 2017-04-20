@@ -32,7 +32,8 @@ public class Collectible : MonoBehaviour
         
         if (gameObject.layer == (int)LayerID.Player)
         {
-            gameObject.SetActive(false);
+			gameObject.GetComponent<Explode> ().Detonate (other.transform);
+            //gameObject.SetActive(false);
         }
     }
 }

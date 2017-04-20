@@ -17,10 +17,6 @@ public class Explode : MonoBehaviour {
 		
 	}
 
-	void OnCollisionEnter (Collision collided){
-        Detonate(collided.transform);
-	}
-
 	public void Detonate (Transform other){
 		gameObject.GetComponent<MeshCollider> ().enabled = false;
 		gameObject.GetComponent<MeshRenderer> ().enabled = false;
@@ -34,6 +30,9 @@ public class Explode : MonoBehaviour {
     IEnumerator Delete(Transform child)
     {
         yield return new WaitForSeconds(Random.Range(2f, 5f)); 
-        Destroy(child.gameObject);
+		if (child != null) 
+		{
+			Destroy (child.gameObject);
+		}
     }
 }
