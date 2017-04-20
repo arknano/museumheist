@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
 
     PlayerInputManager inputManager;
 
+	public float shootTimer;
+	float shootTime;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -23,6 +26,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		shootTime++;
         if(inputManager == null)
         {
             inputManager = GetComponent<PlayerInputManager>();
@@ -40,10 +44,15 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F) || inputManager.GetButtonDown(Button.Shoot) )
         {
-            ThrowObject();
+			if(shootTime >= shootTimer)
+			{
+				ThrowObject();
+				shootTime = 0;
+			}
+            
         }
 
-        Debug.Log(Button.Shoot);
+        //Debug.Log(Button.Shoot);
         //}
     }
 
@@ -61,7 +70,7 @@ public class Player : MonoBehaviour
             startingPosition.y += 1f;
             collectibleList[lastIndex].transform.position = startingPosition;
             collectibleList[lastIndex].gameObject.SetActive(true);
-            force = (m_player.transform.forward*2) + m_player.transform.up;
+            force = (m_player.transform.forward*2);
             force = force.normalized * 50;
             collectibleList[lastIndex].rb.AddForce(force);
             collectibleList[lastIndex].gameObject.layer = (int)LayerID.Player;

@@ -73,7 +73,7 @@ public class PlayerInputManager : MonoBehaviour
             case Button.Crouch:
                 return device.Action2;
             case Button.Shoot:
-                return device.RightTrigger.IsPressed;
+                return device.RightTrigger.WasPressed;
             case Button.Prone:
                 return device.Action3;
             case Button.Jump:
