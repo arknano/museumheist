@@ -38,12 +38,10 @@ public class Player : MonoBehaviour
         //        }
         //    }
 
-        if (Input.GetKeyDown(KeyCode.F) || inputManager.GetButtonDown(Button.Shoot) )
+        if ((inputManager.GetActive()) ? inputManager.GetButtonDown(Button.Shoot) : Input.GetKeyDown(KeyCode.F)) 
         {
             ThrowObject();
         }
-
-        Debug.Log(Button.Shoot);
         //}
     }
 

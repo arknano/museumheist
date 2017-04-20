@@ -46,7 +46,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
             if (!m_Jump)
             {
-                m_Jump = m_inputManager.GetButtonDown(Button.Jump);
+                m_Jump = (m_inputManager.GetActive()) ? m_inputManager.GetButtonDown(Button.Jump) : CrossPlatformInputManager.GetButtonDown("Jump");
             }
         }
 
@@ -58,10 +58,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             //float h = CrossPlatformInputManager.GetAxis("Horizontal");
             //float v = CrossPlatformInputManager.GetAxis("Vertical");
 
-            float h = m_inputManager.GetAxis(Axis.Horizontal);
-            float v = m_inputManager.GetAxis(Axis.Verticle);
+            float h = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Horizontal) : CrossPlatformInputManager.GetAxis("Horizontal");
+            float v = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Verticle) : CrossPlatformInputManager.GetAxis("Vertical");
 
-            bool crouch = Input.GetKey(KeyCode.C);
+            bool crouch = (m_inputManager.GetActive()) ? m_inputManager.GetButtonDown(Button.Crouch) : Input.GetKey(KeyCode.C);
 
             // calculate move direction to pass to character
             if (m_Cam != null)

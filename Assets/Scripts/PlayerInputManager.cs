@@ -33,10 +33,6 @@ public class PlayerInputManager : MonoBehaviour
     void Start ()
     {
         controllerIndex = -1;
-        //foreach (InputDevice device in InputManager.Devices)
-        //{
-        //    devices.Add(new ConnectedControllers(device));
-        //}
 
         manager = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
         
@@ -45,25 +41,13 @@ public class PlayerInputManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        //if (device == null)
-        //{
-        //    foreach(GameManager.ConnectedControllers controller in manager.controllerList)
-        //    {
-        //        if (!controller.isUsed)
-        //        {
-        //            controller.isUsed = true;
-        //            device = controller.device;
-        //        }
-
-        //        device = InputManager.ActiveDevice;
-        //    }
-        //}
-
         if (controllerIndex == -1)
         {
             controllerIndex = manager.GetIndex();
-            device = InputManager.Devices[controllerIndex];
+            if (InputManager.Devices.Count > controllerIndex)
+                device = InputManager.Devices[controllerIndex];
         }
+
 	}
 
     public bool GetButtonDown(Button button)
@@ -94,6 +78,11 @@ public class PlayerInputManager : MonoBehaviour
             default:
                 return 0f;
         }
+    }
+
+    public bool GetActive()
+    {
+        return (device != null);
     }
 
 }
