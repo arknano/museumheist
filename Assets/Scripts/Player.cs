@@ -7,6 +7,8 @@ using InControl;
 public class Player : MonoBehaviour
 {
     GameObject m_player;
+    public float forceSpeed;
+    public float health = 10;
 
     public List<Collectible> collectibleList;
 
@@ -70,7 +72,7 @@ public class Player : MonoBehaviour
             collectibleList[lastIndex].transform.position = startingPosition;
             collectibleList[lastIndex].gameObject.SetActive(true);
             force = (m_player.transform.forward*2);
-            force = force.normalized * 50;
+            force = force.normalized * forceSpeed;
             collectibleList[lastIndex].rb.AddForce(force);
             collectibleList[lastIndex].gameObject.tag = "Projectile";
 
