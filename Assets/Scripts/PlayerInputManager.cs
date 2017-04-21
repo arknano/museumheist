@@ -20,8 +20,9 @@ public enum Axis
 }
 
 public class PlayerInputManager : MonoBehaviour
-{    
-    InputDevice device;
+{   
+    
+    public InputDevice device;
 
     GameManager manager;
 
@@ -35,6 +36,8 @@ public class PlayerInputManager : MonoBehaviour
         controllerIndex = -1;
 
         manager = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
+
+        device = null;
         
 	}
 	
@@ -47,7 +50,6 @@ public class PlayerInputManager : MonoBehaviour
             if (InputManager.Devices.Count > controllerIndex)
                 device = InputManager.Devices[controllerIndex];
         }
-
 	}
 
     public bool GetButtonDown(Button button)

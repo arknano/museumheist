@@ -4,7 +4,8 @@ using UnityEngine;
 
 enum LayerID
 {
-    Player = 8
+    Player = 8,
+    Projectile = 9
 }
 
 

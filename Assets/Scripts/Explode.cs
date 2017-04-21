@@ -17,15 +17,36 @@ public class Explode : MonoBehaviour {
 		
 	}
 
-	public void Detonate (Transform other){
-		gameObject.GetComponent<MeshCollider> ().enabled = false;
-		gameObject.GetComponent<MeshRenderer> ().enabled = false;
-		exploder.SetActive (true);
-		foreach (Transform child in exploder.transform) {
-			child.GetComponent<Rigidbody>().AddExplosionForce (force, other.position,explosionRadius);
-            StartCoroutine(Delete(child));
-		}
-	}
+	public void Detonate (Transform other)
+    {
+        try
+        {
+            gameObject.GetComponent<MeshCollider>().enabled = false;
+        }
+        catch
+        {
+            Debug.Log(gameObject.name.ToString() + " is missing a MeshCollider");
+        }
+
+        try
+        {
+            gameObject.GetComponent<MeshRenderer>().enabled = false;
+        }
+        catch
+        {
+            Debug.Log(gameObject.name.ToString() + " is missing MeshRenderer");
+        }
+
+        if (exploder != null)
+        {
+            exploder.SetActive(true);
+            foreach (Transform child in exploder.transform)
+            {
+                child.GetComponent<Rigidbody>().AddExplosionForce(force, other.position, explosionRadius);
+                StartCoroutine(Delete(child));
+            }
+        }
+        }
 
     IEnumerator Delete(Transform child)
     {

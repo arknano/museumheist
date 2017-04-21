@@ -30,7 +30,7 @@ public class LightCone : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-
+            AIController.LostLOS(other.gameObject);
         }
     }
 }

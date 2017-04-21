@@ -55,11 +55,17 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private void FixedUpdate()
         {
             // read inputs
-            //float h = CrossPlatformInputManager.GetAxis("Horizontal");
-            //float v = CrossPlatformInputManager.GetAxis("Vertical");
+            //float h = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Horizontal) : CrossPlatformInputManager.GetAxis("Horizontal");
+            //float v = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Verticle) : CrossPlatformInputManager.GetAxis("Vertical");
 
-            float h = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Horizontal) : CrossPlatformInputManager.GetAxis("Horizontal");
-            float v = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Verticle) : CrossPlatformInputManager.GetAxis("Vertical");
+            float h = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Horizontal) : 
+                        (Input.GetKey(KeyCode.A)) ? -1 : 
+                            (Input.GetKey(KeyCode.D)) ? 1 : 
+                                0;
+            float v = (m_inputManager.GetActive()) ? m_inputManager.GetAxis(Axis.Verticle) :
+                        (Input.GetKey(KeyCode.W)) ? 1 :
+                            (Input.GetKey(KeyCode.S)) ? -1 :
+                                0;
 
             bool crouch = (m_inputManager.GetActive()) ? m_inputManager.GetButtonDown(Button.Crouch) : Input.GetKey(KeyCode.C);
 

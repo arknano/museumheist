@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Explode))]
 public class Collectible : MonoBehaviour
 {
     [HideInInspector]
@@ -30,9 +31,11 @@ public class Collectible : MonoBehaviour
         }
         
         
-        if (gameObject.layer == (int)LayerID.Player)
+        if (gameObject.tag == "Projectile")
         {
-			gameObject.GetComponent<Explode> ().Detonate (other.transform);
+
+			gameObject.GetComponent<Explode>().Detonate(other.transform);
+
             //gameObject.SetActive(false);
         }
     }

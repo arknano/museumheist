@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
             force = (m_player.transform.forward*2);
             force = force.normalized * 50;
             collectibleList[lastIndex].rb.AddForce(force);
-            collectibleList[lastIndex].gameObject.layer = (int)LayerID.Player;
+            collectibleList[lastIndex].gameObject.tag = "Projectile";
 
             collectibleList.RemoveAt(lastIndex);
         }
