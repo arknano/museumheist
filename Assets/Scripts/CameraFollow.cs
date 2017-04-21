@@ -10,8 +10,8 @@ public class CameraFollow : MonoBehaviour
     public float yFocusDistance2Player;
     public float zFocusDistance2Player;
 
-    public float yFocusDistance1Player;
-    public float zFocusDistance1Player;
+    public float yFocusDistance1Player = 20;
+    public float zFocusDistance1Player = 10;
 
     // Use this for initialization
     void Start ()
@@ -19,7 +19,7 @@ public class CameraFollow : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         cam = Camera.main;
 
-
+        transform.localRotation = Quaternion.Euler (65, 0, 0);
 	}
 	
 	// Update is called once per frame
@@ -45,7 +45,7 @@ public class CameraFollow : MonoBehaviour
                 {
                     zDistance = 0;
                 }
-                focusPoint.y = yFocusDistance2Player + distance;
+                focusPoint.y = yFocusDistance2Player + distance + zDistance;
                 focusPoint.z -= zFocusDistance2Player + distance + zDistance;
             }
             else
