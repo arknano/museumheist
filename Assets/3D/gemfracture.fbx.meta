@@ -147,6 +147,34 @@ ModelImporter:
     4300050: polySurface24
     4300052: polySurface23
     4300054: polySurface22
+    6400000: polySurface1
+    6400002: polySurface10
+    6400004: polySurface11
+    6400006: polySurface12
+    6400008: polySurface13
+    6400010: polySurface14
+    6400012: polySurface15
+    6400014: polySurface16
+    6400016: polySurface17
+    6400018: polySurface18
+    6400020: polySurface19
+    6400022: polySurface2
+    6400024: polySurface20
+    6400026: polySurface21
+    6400028: polySurface22
+    6400030: polySurface23
+    6400032: polySurface24
+    6400034: polySurface25
+    6400036: polySurface26
+    6400038: polySurface27
+    6400040: polySurface28
+    6400042: polySurface3
+    6400044: polySurface4
+    6400046: polySurface5
+    6400048: polySurface6
+    6400050: polySurface7
+    6400052: polySurface8
+    6400054: polySurface9
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -174,7 +202,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0

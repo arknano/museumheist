@@ -17,6 +17,8 @@ ModelImporter:
     3300002: slidingdoorright
     4300000: slidingdoor_left
     4300002: slidingdoorright
+    6400000: slidingdoor_left
+    6400002: slidingdoorright
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -44,7 +46,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0

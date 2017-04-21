@@ -6,7 +6,8 @@ using InControl;
 
 public class Player : MonoBehaviour
 {
-
+    // speed at which objects are thrown
+    public float forceSpeed;
 
     public List<Collectible> collectibleList;
 
@@ -100,6 +101,7 @@ public class Player : MonoBehaviour
             Vector3 aimDirection = new Vector3(inputManager.GetAxis(Axis.RHorizontal), 0, inputManager.GetAxis(Axis.RVerticle));
             force = (aimDirection.magnitude > 0) ? aimDirection.normalized : (gameObject.transform.forward);
             force = force.normalized * throwSpeed;
+
             collectibleList[lastIndex].rb.AddForce(force);
             collectibleList[lastIndex].gameObject.tag = "Projectile";
             if (collectibleList[lastIndex].damage == 0)

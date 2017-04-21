@@ -8,14 +8,17 @@ public class MenuController : MonoBehaviour {
 
 	public bool multiplayer;
 	public GameObject gameUI;
-	public GameObject p2UI;
+    public GameObject p1UI;
+    public GameObject p2UI;
 
 	public Image p1Bag;
 	public Text p1Text;
+    public Image p1HealthBar;
 	public Image p2Bag;
 	public Text p2Text;
+    public Image p2HealthBar;
 
-	public int fatThreshold;
+    public int fatThreshold;
 	public int fatterThreshold;
 	public int fattestThreshold;
 
@@ -30,10 +33,11 @@ public class MenuController : MonoBehaviour {
 	public void StartGame (bool isMultiplayer) {
 		gameUI.SetActive (true);
 		if (isMultiplayer){
-			p2UI.SetActive(true);
+            p2UI.SetActive(true);
 			multiplayer = true;
 		}
-		SceneManager.LoadScene (1);
+        p1UI.SetActive(true);
+        SceneManager.LoadScene (1);
 	}
 
 	public void ExitGame (){

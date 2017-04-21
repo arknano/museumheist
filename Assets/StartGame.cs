@@ -3,35 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StartGame : MonoBehaviour
-{
+public class StartGame : MonoBehaviour {
 
 	public GameObject player1;
 	public GameObject player2;
 
-	MenuController mc;
+    float p1MaxHealth;
+    float p2MaxHealth;
+
+    MenuController mc;
 	// Use this for initialization
-	void Start ()
-    {
-        try
+	void Start () {
+		mc = GameObject.Find ("MenuController").GetComponent<MenuController> ();
+		if (mc.multiplayer){
+			player2.SetActive (true);
+		}
+		InvokeRepeating ("UpdateUI",0.5f,0.5f);
+        p1MaxHealth = player1.GetComponent<Player>().health;
+        if (mc.multiplayer)
         {
-            mc = GameObject.Find("MenuController").GetComponent<MenuController>();
-            if (mc.multiplayer)
-            {
-                player2.SetActive(true);
-            }
-            InvokeRepeating("UpdateScore", 0.5f, 0.5f);
+            p2MaxHealth = player2.GetComponent<Player>().health;
         }
-        catch
-        {
-            Debug.Log("Unable to find MenuController");
-        }
-	}
+    }
 
 	// Update is called once per frame
-	void UpdateScore () {
+	void UpdateUI () {
 		var p1score = player1.GetComponent<Player> ().collectibleList.Count;
-		mc.p1Text.text = "" + p1score;
+        var p1health = player1.GetComponent<Player>().health;
+        mc.p1HealthBar.fillAmount = p1health / p1MaxHealth;
+        if (mc.multiplayer)
+        {
+            var p2health = player2.GetComponent<Player>().health;
+            mc.p2HealthBar.fillAmount = p2health / p2MaxHealth;
+        }
+        mc.p1Text.text = "" + p1score;
 		if (p1score < mc.fatThreshold){
 			mc.p1Bag.sprite = mc.p1Images [0];
 		} 
