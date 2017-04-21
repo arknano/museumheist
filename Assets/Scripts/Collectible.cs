@@ -7,7 +7,9 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     [HideInInspector]
-    public Rigidbody rb;    
+    public Rigidbody rb;
+
+    public float damage = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -33,8 +35,16 @@ public class Collectible : MonoBehaviour
         
         if (gameObject.tag == "Projectile")
         {
-
-			gameObject.GetComponent<Explode>().Detonate(other.transform);
+            gameObject.GetComponent<Explode>().Detonate(other.transform);
+            if (other.transform.tag == "Enemy")
+            {
+                other.gameObject.GetComponent<AI>().HitByPlayer();
+            }
+            if(other.transform.tag == "Player")
+            {
+                other.gameObject.GetComponent<Player>().setStun(damage);
+            }
+            
 
             //gameObject.SetActive(false);
         }

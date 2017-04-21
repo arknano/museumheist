@@ -16,7 +16,9 @@ public enum Button
 public enum Axis
 {
     Horizontal,
-    Verticle
+    Verticle,
+    RHorizontal,
+    RVerticle
 }
 
 public class PlayerInputManager : MonoBehaviour
@@ -77,6 +79,10 @@ public class PlayerInputManager : MonoBehaviour
                 return device.LeftStickX;
             case Axis.Verticle:
                 return device.LeftStickY;
+            case Axis.RHorizontal:
+                return device.RightStickX;
+            case Axis.RVerticle:
+                return device.RightStickY;
             default:
                 return 0f;
         }

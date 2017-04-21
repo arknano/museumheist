@@ -7,8 +7,8 @@ public class CameraFollow : MonoBehaviour
     GameObject[] players;
     Camera cam;
 
-    public float yFocusDistance2Player;
-    public float zFocusDistance2Player;
+    public float yFocusDistance2Player = 20;
+    public float zFocusDistance2Player = 10;
 
     public float yFocusDistance1Player = 20;
     public float zFocusDistance1Player = 10;

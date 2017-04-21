@@ -22,22 +22,37 @@ public class AI : MonoBehaviour
     NavMeshAgent agent;
     AICharacterControl characterController;
 
+    public float attackDamage = 10f;
+
+    public float attackRange = 2f;
+
+    public float attackTiming = 1f;
+
+    float timer;
+
     public bool inLightCone;
 
     GameObject lastknownPosition;
 
-    Transform currentTargetPosition;
+    Transform currentTarget;
 
     GameObject wanderTarget;
 
     [Tooltip("Distance AI wanders after losing player")]
     public float wanderDistance = 30f;
 
+    public int startingPatrolIndex = 0;
+
+    [Tooltip("Will grab all patrol points if not given any")]
     public GameObject[] patrolPoints;
 
     int patrolIndex = 0;
 
     float stoppingDistance;
+
+    public float stunTime = 3;
+    
+    public bool isStunned;
 
 	// Use this for initialization
 	void Start ()
@@ -49,35 +64,49 @@ public class AI : MonoBehaviour
         lastknownPosition = new GameObject();
         wanderTarget = new GameObject();
 
-        patrolPoints = GameObject.FindGameObjectsWithTag("Patrol Point");
+        if (patrolPoints.Length == 0)
+            patrolPoints = GameObject.FindGameObjectsWithTag("Patrol Point");
 
         IComparer myComparer = new patrolPointSorter();
         Array.Sort(patrolPoints, myComparer);
 
+        patrolIndex = startingPatrolIndex;
+
         GetNextDestination();
         stoppingDistance = agent.radius * 1.3f;
+
+        isStunned = false;
+
+        timer = attackTiming;
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-		if((currentTargetPosition.position - transform.position).magnitude < stoppingDistance)
+        if (!isStunned)
         {
-            if (currentTargetPosition == lastknownPosition.transform)
+            if ((currentTarget.position - transform.position).magnitude < stoppingDistance)
             {
-                Wander();
+                if (currentTarget == lastknownPosition.transform)
+                {
+                    Wander();
+                }
+                else
+                {
+                    GetNextDestination();
+                }
             }
-            else
-            {
-                GetNextDestination();
-            }            
         }
-	}
 
-    void OnGizmoDraw()
-    {
-        Gizmos.DrawCube(currentTargetPosition.position, new Vector3(10, 10, 10));
-    }
+        if(isStunned)
+        {
+            HitByPlayer();
+        }
+
+        if (attackTiming < timer)
+            attackTiming += Time.deltaTime;
+	}
 
     public void CheckLOS(GameObject player)
     {
@@ -86,27 +115,43 @@ public class AI : MonoBehaviour
         {
             if (hit.transform.tag == "Player")
             {
-                currentTargetPosition = hit.transform;
-                characterController.SetTarget(currentTargetPosition);
+                currentTarget = hit.transform;
+                characterController.SetTarget(currentTarget);
                 stoppingDistance = agent.radius + player.GetComponent<CapsuleCollider>().radius;
                 agent.stoppingDistance = stoppingDistance;
-                stoppingDistance *= 1.3f;
+                stoppingDistance *= 2f;
+
+                transform.position.Set(transform.position.x, 0, transform.position.z);
+                Debug.Log(transform.position.y);
+                if((transform.position - hit.transform.position).magnitude < (attackRange + stoppingDistance))
+                {
+                    AttackPlayer(player);
+                }
             }
+        }
+    }
+
+    void AttackPlayer(GameObject player)
+    {
+        if (attackTiming >= timer)
+        {
+            attackTiming = 0;
+            player.GetComponent<Player>().LoseHealth(attackDamage);
         }
     }
 
     public void LostLOS(GameObject player)
     {
         lastknownPosition.transform.position = player.transform.position;
-        currentTargetPosition = lastknownPosition.transform;
+        currentTarget = lastknownPosition.transform;
 
-        characterController.SetTarget(currentTargetPosition);
+        characterController.SetTarget(currentTarget);
     }
 
     void GetNextDestination()
     {
-        currentTargetPosition = patrolPoints[patrolIndex++].transform;
-        characterController.SetTarget(currentTargetPosition);
+        currentTarget = patrolPoints[patrolIndex++].transform;
+        characterController.SetTarget(currentTarget);
         if(patrolIndex == patrolPoints.Length)
         {
             patrolIndex = 0;
@@ -119,12 +164,26 @@ public class AI : MonoBehaviour
     {
         wanderTarget.transform.position = transform.position + (transform.forward * wanderDistance) + (new Vector3(UnityEngine.Random.Range(0f, 1f), 0, UnityEngine.Random.Range(0f, 1f)).normalized) * (wanderDistance / 2);
 
-        Debug.Log(wanderTarget.transform.position + " " + transform.position);
+        currentTarget = wanderTarget.transform;
 
-        currentTargetPosition = wanderTarget.transform;
+        characterController.SetTarget(currentTarget);
+    }
 
-        Debug.Log(wanderTarget.transform.position);
+    public void HitByPlayer()
+    {
+        StartCoroutine(FallAndStunned());
+    }
 
-        characterController.SetTarget(currentTargetPosition);
+    IEnumerator FallAndStunned()
+    {
+        isStunned = true;
+        characterController.SetTarget(transform);
+        
+        // fall over goes here
+
+        yield return new WaitForSeconds(stunTime);
+        characterController.SetTarget(currentTarget);
+
+        isStunned = false;
     }
 }

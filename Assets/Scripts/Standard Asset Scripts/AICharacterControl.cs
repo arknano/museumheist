@@ -12,6 +12,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         public Transform target;                                    // target to aim for
 
 
+        public bool isStunned;
+
         private void Start()
         {
             // get the components on the object we need ( should not be null due to require component so no need to check )
@@ -20,18 +22,23 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 	        agent.updateRotation = false;
 	        agent.updatePosition = true;
+
+            //isStunned = false;
         }
 
 
         private void Update()
         {
+            if(!isStunned)
+            { 
             if (target != null)
                 agent.SetDestination(target.position);
 
-            if (agent.remainingDistance > agent.stoppingDistance)
+            if (agent.remainingDistance > agent.stoppingDistance && !isStunned)
                 character.Move(agent.desiredVelocity, false, false);
             else
                 character.Move(Vector3.zero, false, false);
+            }
         }
 
 

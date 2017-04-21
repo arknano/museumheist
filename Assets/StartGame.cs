@@ -3,19 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StartGame : MonoBehaviour {
+public class StartGame : MonoBehaviour
+{
 
 	public GameObject player1;
 	public GameObject player2;
 
 	MenuController mc;
 	// Use this for initialization
-	void Start () {
-		mc = GameObject.Find ("MenuController").GetComponent<MenuController> ();
-		if (mc.multiplayer){
-			player2.SetActive (true);
-		}
-		InvokeRepeating ("UpdateScore",0.5f,0.5f);
+	void Start ()
+    {
+        try
+        {
+            mc = GameObject.Find("MenuController").GetComponent<MenuController>();
+            if (mc.multiplayer)
+            {
+                player2.SetActive(true);
+            }
+            InvokeRepeating("UpdateScore", 0.5f, 0.5f);
+        }
+        catch
+        {
+            Debug.Log("Unable to find MenuController");
+        }
 	}
 
 	// Update is called once per frame
