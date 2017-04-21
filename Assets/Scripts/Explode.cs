@@ -5,8 +5,8 @@ using UnityEngine;
 public class Explode : MonoBehaviour {
 
 	public GameObject exploder;
-	public float force;
-    public float explosionRadius;
+	public float force = 100;
+    public float explosionRadius = 1;
 	// Use this for initialization
 	void Start () {
 		
