@@ -7,11 +7,19 @@ public class CameraFollow : MonoBehaviour
     GameObject[] players;
     Camera cam;
 
-	// Use this for initialization
-	void Start ()
+    public float yFocusDistance2Player;
+    public float zFocusDistance2Player;
+
+    public float yFocusDistance1Player;
+    public float zFocusDistance1Player;
+
+    // Use this for initialization
+    void Start ()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        cam = Camera.main;      
+        cam = Camera.main;
+
+
 	}
 	
 	// Update is called once per frame
@@ -37,21 +45,21 @@ public class CameraFollow : MonoBehaviour
                 {
                     zDistance = 0;
                 }
-                focusPoint.y = 10 + distance;
-                focusPoint.z -= 10 + distance + zDistance;
+                focusPoint.y = yFocusDistance2Player + distance;
+                focusPoint.z -= zFocusDistance2Player + distance + zDistance;
             }
             else
             {
-                focusPoint.y = 10;
-                focusPoint.z -= 10;
+                focusPoint.y = yFocusDistance2Player;
+                focusPoint.z -= zFocusDistance2Player;
             }
 
         }
         else
         {
             focusPoint = players[0].transform.position;
-            focusPoint.y = 10;
-            focusPoint.z -= 10;
+            focusPoint.y = yFocusDistance1Player;
+            focusPoint.z -= zFocusDistance1Player;
             
         }
         cam.transform.position = focusPoint;
