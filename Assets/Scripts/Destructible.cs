@@ -27,14 +27,15 @@ public class Destructible : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag == "Collectible")
+        if(other.gameObject.tag == "Projectile")
         {
             currentHealth -= damageWhenHit;
         }
 
         if(currentHealth <= 0)
         {
-            gameObject.SetActive(false);
+            gameObject.GetComponent<Explode>().Detonate(other.transform);
+            //gameObject.SetActive(false);
         }
     }
 }

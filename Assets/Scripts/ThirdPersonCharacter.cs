@@ -16,6 +16,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
+        public Animator playerAnimator;
+
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
 		bool m_IsGrounded;
@@ -127,6 +129,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 m_Animator.SetFloat("Turn", 0, 0.0f, Time.deltaTime);
                 m_Animator.SetBool("Crouch", false);
                 m_Animator.SetBool("OnGround", m_IsGrounded);
+                playerAnimator.SetFloat("speed", m_Rigidbody.velocity.magnitude);
             }
             else
             {
@@ -134,6 +137,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
                 m_Animator.SetBool("Crouch", m_Crouching);
                 m_Animator.SetBool("OnGround", m_IsGrounded);
+                playerAnimator.SetFloat("speed", m_Rigidbody.velocity.magnitude);
             }
             if (!m_IsGrounded)
             {
@@ -162,8 +166,8 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             {
                 // don't use that while airborne
                 m_Animator.speed = 1;
-            }
-            
+            }            
+
 		}
 
 
