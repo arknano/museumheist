@@ -42,8 +42,11 @@ public class Explode : MonoBehaviour {
             exploder.SetActive(true);
             foreach (Transform child in exploder.transform)
             {
-                child.GetComponent<Rigidbody>().AddExplosionForce(force, other.position, explosionRadius);
-                StartCoroutine(Delete(child));
+                if (child.gameObject == isActiveAndEnabled)
+                {
+                    child.GetComponent<Rigidbody>().AddExplosionForce(force, other.position, explosionRadius);
+                    StartCoroutine(Delete(child));
+                }
             }
         }
         }
