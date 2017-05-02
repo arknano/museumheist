@@ -225,6 +225,11 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
 		}
 
+        public bool GetCrouchState()
+        {
+            return m_Crouching;
+        }
+
 
 		void CheckGroundStatus()
 		{
