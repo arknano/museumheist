@@ -36,7 +36,7 @@ public class AI : MonoBehaviour
 
     GameObject lastknownPosition;
 
-    Transform currentTarget;
+    public Transform currentTarget;
 
     GameObject wanderTarget;
 
@@ -67,12 +67,20 @@ public class AI : MonoBehaviour
         wanderTarget = new GameObject();
 
         if (patrolPoints.Length == 0)
+        {
             patrolPoints = GameObject.FindGameObjectsWithTag("Patrol Point");
 
-        IComparer myComparer = new patrolPointSorter();
-        Array.Sort(patrolPoints, myComparer);
+            IComparer myComparer = new patrolPointSorter();
+            Array.Sort(patrolPoints, myComparer);
+        }
+
+        if (startingPatrolIndex >= patrolPoints.Length)
+            startingPatrolIndex = 0;
+
+        
 
         patrolIndex = startingPatrolIndex;
+
 
         GetNextDestination();
         stoppingDistance = agent.radius * 1.3f;
@@ -86,6 +94,12 @@ public class AI : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+
+        if(currentTarget == null)
+        {
+            GetNextDestination();
+        }
+
         if (!isStunned)
         {
             if (currentTarget.tag == "Player")
@@ -95,7 +109,7 @@ public class AI : MonoBehaviour
                     LostTarget();
                 }
             }
-            else if ((currentTarget.position - transform.position).magnitude < stoppingDistance)
+            else if (new Vector2(currentTarget.position.x - transform.position.x, currentTarget.position.z - transform.position.z).magnitude < stoppingDistance)
             {
                 if (currentTarget == lastknownPosition.transform)
                 {
