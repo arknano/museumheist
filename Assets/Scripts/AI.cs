@@ -28,6 +28,8 @@ public class AI : MonoBehaviour
 
     public float attackTiming = 1f;
 
+    public float crouchDetectionRange = 3f;
+
     float timer;
 
     public bool inLightCone;
@@ -86,22 +88,24 @@ public class AI : MonoBehaviour
     {
         if (!isStunned)
         {
-            if ((currentTarget.position - transform.position).magnitude < stoppingDistance)
+            if (currentTarget.tag == "Player")
+            {
+                if ((currentTarget.position - transform.position).magnitude > ((crouchDetectionRange < 3f) ? crouchDetectionRange : 3f))
+                {
+                    LostTarget();
+                }
+            }
+            else if ((currentTarget.position - transform.position).magnitude < stoppingDistance)
             {
                 if (currentTarget == lastknownPosition.transform)
                 {
-                    Wander();
+                   Wander();
                 }
                 else
                 {
-                    GetNextDestination();
+                   GetNextDestination();
                 }
             }
-        }
-
-        if(isStunned)
-        {
-            HitByPlayer();
         }
 
         if (attackTiming < timer)
@@ -115,14 +119,16 @@ public class AI : MonoBehaviour
         {
             if (hit.transform.tag == "Player")
             {
-                currentTarget = hit.transform;
-                characterController.SetTarget(currentTarget);
-                stoppingDistance = agent.radius + player.GetComponent<CapsuleCollider>().radius;
-                agent.stoppingDistance = stoppingDistance;
-                stoppingDistance *= 2f;
-
+                if ((player.GetComponent<ThirdPersonCharacter>().GetCrouchState() && (transform.position - hit.transform.position).magnitude < crouchDetectionRange) ||
+                       !player.GetComponent<ThirdPersonCharacter>().GetCrouchState())
+                {
+                    currentTarget = hit.transform;
+                    characterController.SetTarget(currentTarget);
+                    stoppingDistance = agent.radius + player.GetComponent<CapsuleCollider>().radius;
+                    agent.stoppingDistance = stoppingDistance;
+                    stoppingDistance *= 2f;
+                }
                 transform.position.Set(transform.position.x, 0, transform.position.z);
-                Debug.Log(transform.position.y);
                 if((transform.position - hit.transform.position).magnitude < (attackRange + stoppingDistance))
                 {
                     AttackPlayer(player);
@@ -140,9 +146,9 @@ public class AI : MonoBehaviour
         }
     }
 
-    public void LostLOS(GameObject player)
+    public void LostTarget()
     {
-        lastknownPosition.transform.position = player.transform.position;
+        lastknownPosition.transform.position = currentTarget.transform.position;
         currentTarget = lastknownPosition.transform;
 
         characterController.SetTarget(currentTarget);
