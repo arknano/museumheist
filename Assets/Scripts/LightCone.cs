@@ -18,6 +18,14 @@ public class LightCone : MonoBehaviour
 		
 	}
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            AIController.CheckLOS(other.gameObject);
+        }
+    }
+
     void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
