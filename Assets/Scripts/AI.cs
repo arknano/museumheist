@@ -111,14 +111,15 @@ public class AI : MonoBehaviour
             }
             else if (new Vector2(currentTarget.position.x - transform.position.x, currentTarget.position.z - transform.position.z).magnitude < stoppingDistance)
             {
-                if (currentTarget == lastknownPosition.transform)
-                {
-                   Wander();
-                }
-                else
-                {
-                   GetNextDestination();
-                }
+                GetNextDestination();
+                //if (currentTarget == lastknownPosition.transform)
+                //{
+                //   Wander();
+                //}
+                //else
+                //{
+                   
+                //}
             }
         }
 
