@@ -124,4 +124,4 @@ Material:
       second: {r: 1, g: 0.7154158, b: 0.102941155, a: 1}
     - first:
         name: _EmissionColor
-      second: {r: 0, g: 0, b: 0, a: 1}
+      second: {r: 1, g: 0.7137255, b: 0.10196079, a: 1}
