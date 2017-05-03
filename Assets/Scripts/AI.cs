@@ -129,24 +129,27 @@ public class AI : MonoBehaviour
 
     public void CheckLOS(GameObject player)
     {
-        RaycastHit hit;
-        if(Physics.Raycast(gameObject.transform.position, player.gameObject.transform.position - gameObject.transform.position, out hit))
+        if (!isStunned)
         {
-            if (hit.transform.tag == "Player")
+            RaycastHit hit;
+            if (Physics.Raycast(gameObject.transform.position, player.gameObject.transform.position - gameObject.transform.position, out hit))
             {
-                if ((player.GetComponent<ThirdPersonCharacter>().GetCrouchState() && (transform.position - hit.transform.position).magnitude < crouchDetectionRange) ||
-                       !player.GetComponent<ThirdPersonCharacter>().GetCrouchState())
+                if (hit.transform.tag == "Player")
                 {
-                    currentTarget = hit.transform;
-                    characterController.SetTarget(currentTarget);
-                    stoppingDistance = agent.radius + player.GetComponent<CapsuleCollider>().radius;
-                    agent.stoppingDistance = stoppingDistance;
-                    stoppingDistance *= 2f;
-                }
-                transform.position.Set(transform.position.x, 0, transform.position.z);
-                if((transform.position - hit.transform.position).magnitude < (attackRange + stoppingDistance))
-                {
-                    AttackPlayer(player);
+                    if ((player.GetComponent<ThirdPersonCharacter>().GetCrouchState() && (transform.position - hit.transform.position).magnitude < crouchDetectionRange) ||
+                           !player.GetComponent<ThirdPersonCharacter>().GetCrouchState())
+                    {
+                        currentTarget = hit.transform;
+                        characterController.SetTarget(currentTarget);
+                        stoppingDistance = agent.radius + player.GetComponent<CapsuleCollider>().radius;
+                        agent.stoppingDistance = stoppingDistance;
+                        stoppingDistance *= 2f;
+                    }
+                    transform.position.Set(transform.position.x, 0, transform.position.z);
+                    if ((transform.position - hit.transform.position).magnitude < (attackRange + stoppingDistance))
+                    {
+                        AttackPlayer(player);
+                    }
                 }
             }
         }
@@ -198,7 +201,8 @@ public class AI : MonoBehaviour
     IEnumerator FallAndStunned()
     {
         isStunned = true;
-        characterController.SetTarget(transform);
+        lastknownPosition.transform.position = transform.position;
+        characterController.SetTarget(lastknownPosition.transform);
         
         // fall over goes here
 
